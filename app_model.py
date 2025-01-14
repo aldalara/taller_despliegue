@@ -8,7 +8,7 @@ from sklearn.metrics import mean_squared_error, mean_absolute_percentage_error
 import numpy as np
 
 os.chdir(os.path.dirname(__file__))
-root_path="/Users/laraaldalur/Desktop/thebridge/2409_dsft_lara_core/4-Data_Engineering/1-APIs/Taller_Despliegue/" # No vale para producción
+root_path="/home/laraaldalur/taller_despliegue/" # No vale para producción
 app = Flask(__name__)
 app.config['DEBUG'] = True
 
@@ -42,7 +42,7 @@ def predict(): # Ligado al endpoint '/api/v1/predict', con el método GET
 @app.route('/api/v1/retrain', methods=['GET'])
 def retrain(): # Rutarlo al endpoint '/api/v1/retrain/', metodo GET
     if os.path.exists(root_path + "data/Advertising_new.csv"):
-        data = pd.read_csv('data/Advertising_new.csv')
+        data = pd.read_csv(root_path + 'data/Advertising_new.csv')
 
         X_train, X_test, y_train, y_test = train_test_split(data.drop(columns=['sales']),
                                                         data['sales'],
@@ -59,5 +59,7 @@ def retrain(): # Rutarlo al endpoint '/api/v1/retrain/', metodo GET
         return f"Model retrained. New evaluation metric RMSE: {str(rmse)}, MAPE: {str(mape)}"
     else:
         return f"<h2>New data for retrain NOT FOUND. Nothing done!</h2>"
-    
-app.run()
+
+if __name__=="__main__":
+
+    app.run()
